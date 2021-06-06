@@ -7,6 +7,8 @@ require("dotenv").config();
 function App() {
   const [monsters, setMonsters] = useState([]);
   const [selectedMonsters, setSelectedMonsters] = useState([]);
+  const [filter, setFilter] = useState("");
+  const [filteredMonsters, setFilteredMonsters] = useState([]);
 
   useEffect(() => {
     const fetchMonsters = async () => {
@@ -14,6 +16,7 @@ function App() {
         `${process.env.REACT_APP_BACKEND}/api/monsters/`
       );
       setMonsters(result.data);
+      setFilteredMonsters(result.data);
     };
     fetchMonsters();
   }, []);
@@ -49,11 +52,26 @@ function App() {
     setSelectedMonsters(copy);
   };
 
+  const filterMonsters = (e) => {
+    const inputValue = e.target.value;
+    if (inputValue === "") {
+      setFilteredMonsters(monsters);
+    } else {
+      let copy = [...monsters];
+      copy = copy.filter((monster) => {
+        return monster.name.toLowerCase().includes(inputValue.toLowerCase());
+      });
+      setFilteredMonsters(copy);
+    }
+    setFilter(inputValue);
+  };
+
   return (
     <div className="app">
       <div className="sidebar">
+        <input value={filter} onChange={(e) => filterMonsters(e)} />
         <ul>
-          {monsters.map((monster) => {
+          {filteredMonsters.map((monster) => {
             return (
               <li
                 key={monster.index}
