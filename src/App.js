@@ -1,23 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import "./index.css";
 
 function App() {
+  const [monsters, setMonsters] = useState([]);
+  const [selectedMonsters, setSelectedMonsters] = useState([]);
+
+  useEffect(() => {
+    const fetchMonsters = async () => {
+      const result = await axios.get(`https://www.dnd5eapi.co/api/monsters/`);
+      setMonsters(result.data.results);
+    };
+    fetchMonsters();
+  }, []);
+
+  const selectMonster = async (index) => {
+    const result = await axios.get(
+      `https://www.dnd5eapi.co/api/monsters/${index}`
+    );
+    if (!selectedMonsters.some((e) => e.index === result.data.index))
+      setSelectedMonsters((selectedMonsters) => [
+        ...selectedMonsters,
+        result.data,
+      ]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <div className="sidebar">
+        <ul>
+          {monsters.map((monster) => {
+            return (
+              <li
+                key={monster.index}
+                onClick={() => selectMonster(monster.index)}
+              >
+                {monster.name}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <div className="content">
+        {selectedMonsters.map((monster) => {
+          return <p key={monster.index}>{monster.name}</p>;
+        })}
+      </div>
     </div>
   );
 }
