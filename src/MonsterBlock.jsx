@@ -52,6 +52,27 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
                             </tr>
                         </tbody>
                     </table>
+                    <div>
+                        {monster.special_abilities.map(ability => {
+                            return (
+                                <div>
+                                    <h3>{ability.name}</h3>
+                                    <p>{ability.desc}</p>
+                                </div>
+                            )
+                        })}
+                    </div>
+                    <div>
+                        <h2>Actions</h2>
+                        {monster.actions.map(action => {
+                            return (
+                                <div>
+                                    <h3>{action.name}</h3>
+                                    <p>{action.desc}</p>
+                                </div>
+                            )
+                        })}
+                    </div>
                 </>
             ) : null}
         </div>
