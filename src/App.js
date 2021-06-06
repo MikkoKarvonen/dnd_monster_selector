@@ -19,11 +19,23 @@ function App() {
     const result = await axios.get(
       `https://www.dnd5eapi.co/api/monsters/${index}`
     );
+    result.data.show = true;
     if (!selectedMonsters.some((e) => e.index === result.data.index))
       setSelectedMonsters((selectedMonsters) => [
         ...selectedMonsters,
         result.data,
       ]);
+  };
+
+  const showHide = (index) => {
+    let copy = [...selectedMonsters];
+    let found = copy.find((x) => x.index === index);
+    if (found.show) {
+      found.show = false;
+    } else {
+      found.show = true;
+    }
+    setSelectedMonsters(copy);
   };
 
   return (
@@ -44,7 +56,13 @@ function App() {
       </div>
       <div className="content">
         {selectedMonsters.map((monster) => {
-          return <MonsterBlock key={monster.index} monster={monster} />;
+          return (
+            <MonsterBlock
+              key={monster.index}
+              monster={monster}
+              showHide={showHide}
+            />
+          );
         })}
       </div>
     </div>
