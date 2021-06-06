@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./index.css";
 import MonsterBlock from "./MonsterBlock";
+require("dotenv").config();
 
 function App() {
   const [monsters, setMonsters] = useState([]);
@@ -9,15 +10,17 @@ function App() {
 
   useEffect(() => {
     const fetchMonsters = async () => {
-      const result = await axios.get(`https://www.dnd5eapi.co/api/monsters/`);
-      setMonsters(result.data.results);
+      const result = await axios.get(
+        `${process.env.REACT_APP_BACKEND}/api/monsters/`
+      );
+      setMonsters(result.data);
     };
     fetchMonsters();
   }, []);
 
   const selectMonster = async (index) => {
     const result = await axios.get(
-      `https://www.dnd5eapi.co/api/monsters/${index}`
+      `${process.env.REACT_APP_BACKEND}/api/monsters/${index}`
     );
     result.data.show = true;
     if (!selectedMonsters.some((e) => e.index === result.data.index))
