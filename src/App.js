@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./index.css";
+import MonsterBlock from "./MonsterBlock";
 
 function App() {
   const [monsters, setMonsters] = useState([]);
@@ -43,7 +44,7 @@ function App() {
       </div>
       <div className="content">
         {selectedMonsters.map((monster) => {
-          return <p key={monster.index}>{monster.name}</p>;
+          return <MonsterBlock key={monster.index} monster={monster} />;
         })}
       </div>
     </div>
