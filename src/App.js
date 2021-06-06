@@ -38,6 +38,14 @@ function App() {
     setSelectedMonsters(copy);
   };
 
+  const removeMonster = (index) => {
+    let copy = [...selectedMonsters];
+    copy = copy.filter((monster) => {
+      return monster.index !== index;
+    });
+    setSelectedMonsters(copy);
+  };
+
   return (
     <div className="app">
       <div className="sidebar">
@@ -61,6 +69,7 @@ function App() {
               key={monster.index}
               monster={monster}
               showHide={showHide}
+              removeMonster={removeMonster}
             />
           );
         })}

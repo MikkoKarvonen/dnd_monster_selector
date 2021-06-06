@@ -1,11 +1,16 @@
-function MonsterBlock({ monster, showHide }) {
+function MonsterBlock({ monster, showHide, removeMonster }) {
     const speeds = Object.keys(monster.speed).map((key) => {
         return key
     });
 
     return (
         <div>
-            <h1 onClick={() => showHide(monster.index)}>{monster.name}</h1>
+            <div>
+                <h1 onClick={() => showHide(monster.index)}>
+                    {monster.name}
+                </h1>
+                <button onClick={() => removeMonster(monster.index)}>X</button>
+            </div>
             {monster.show ? (
                 <>
                     <p>{`${monster.size} ${monster.type}, ${monster.alignment}`}</p>
