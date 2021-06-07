@@ -3,6 +3,23 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
         return key
     });
 
+    const senses = Object.keys(monster.senses).map((key) => {
+        return key
+    });
+
+    const savingThrows = [];
+    const skills = [];
+    monster.proficiencies.map(proficiency => {
+        const obj = { value: proficiency.value }
+        if (proficiency.proficiency.index.includes("saving")) {
+            obj.name = proficiency.proficiency.name.replace("Saving Throw: ", "")
+            savingThrows.push(obj)
+        } else if (proficiency.proficiency.index.includes("skill")) {
+            obj.name = proficiency.proficiency.name.replace("Skill: ", "")
+            skills.push(obj)
+        }
+    })
+
     return (
         <div>
             <div>
@@ -53,7 +70,58 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
                         </tbody>
                     </table>
                     <div>
-                        {monster.special_abilities.map(ability => {
+                        {savingThrows.length ? (
+                            <div>
+                                <p>Saving throws</p>
+                                {savingThrows.map(saving => {
+                                    return (
+                                        <p>{saving.name} {saving.value}</p>
+                                    )
+                                })}
+                            </div>
+                        ) : null}
+                        {skills.length ? (
+                            <div>
+                                <p>Skills</p>
+                                {skills.map(skill => {
+                                    return (
+                                        <p>{skill.name} {skill.value}</p>
+                                    )
+                                })}
+                            </div>
+                        ) : null}
+                        <p>Damage vulnerabilities</p>
+                        {monster.damage_vulnerabilities && monster.damage_vulnerabilities.map(vulnerability => {
+                            return <p>{vulnerability}</p>
+                        })}
+                        <p>Damage resistances</p>
+                        {monster.damage_resistances && monster.damage_resistances.map(resistance => {
+                            return <p>{resistance}</p>
+                        })}
+                        <p>Damage immunities</p>
+                        {monster.damage_immunities && monster.damage_immunities.map(immunity => {
+                            return <p>{immunity}</p>
+                        })}
+                        <p>Condition immunities</p>
+                        {monster.condition_immunities && monster.condition_immunities.map(immunity => {
+                            return <p>{immunity.name}</p>
+                        })}
+                        {senses.length ? (
+                            <div>
+                                <p>Senses</p>
+                                {senses.map(sense => {
+                                    return (
+                                        <p>{sense} {monster.senses[sense]}</p>
+                                    )
+                                })}
+                            </div>
+
+                        ) : null}
+                        <p>Languages {monster.languages}</p>
+                        <p>Challenge {monster.challenge_rating} ({monster.xp}xp)</p>
+                    </div>
+                    <div>
+                        {monster.special_abilities && monster.special_abilities.map(ability => {
                             return (
                                 <div>
                                     <h3>{ability.name}</h3>
@@ -72,6 +140,17 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
                                 </div>
                             )
                         })}
+                        {monster.legendary_actions ? (
+                            <div>
+                                <h2>Legendary Actions</h2>
+                                {monster.legendary_actions.map(action => {
+                                    return (<div>
+                                        <h3>{action.name}</h3>
+                                        <p>{action.desc}</p>
+                                    </div>)
+                                })}
+                            </div>
+                        ) : null}
                     </div>
                 </>
             ) : null}
