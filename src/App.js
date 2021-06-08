@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./index.css";
 import MonsterBlock from "./MonsterBlock";
+import { Layout, Input, List } from "antd";
+import "antd/dist/antd.css";
+
+const { Sider, Content } = Layout;
 require("dotenv").config();
 
 function App() {
@@ -67,23 +71,23 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <div className="sidebar">
-        <input value={filter} onChange={(e) => filterMonsters(e)} />
-        <ul>
-          {filteredMonsters.map((monster) => {
-            return (
-              <li
-                key={monster.index}
-                onClick={() => selectMonster(monster.index)}
-              >
-                {monster.name}
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-      <div className="content">
+    <Layout>
+      <Sider>
+        <Input value={filter} onChange={(e) => filterMonsters(e)} />
+
+        <List
+          dataSource={filteredMonsters}
+          renderItem={(monster) => (
+            <List.Item
+              key={monster.index}
+              onClick={() => selectMonster(monster.index)}
+            >
+              {monster.name}
+            </List.Item>
+          )}
+        />
+      </Sider>
+      <Content>
         {selectedMonsters.map((monster) => {
           return (
             <MonsterBlock
@@ -94,8 +98,8 @@ function App() {
             />
           );
         })}
-      </div>
-    </div>
+      </Content>
+    </Layout>
   );
 }
 
