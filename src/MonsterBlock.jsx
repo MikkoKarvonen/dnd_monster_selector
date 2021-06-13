@@ -1,3 +1,5 @@
+import { Card } from 'antd';
+
 function MonsterBlock({ monster, showHide, removeMonster }) {
     const speeds = Object.keys(monster.speed).map((key) => {
         return key
@@ -21,13 +23,15 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
     })
 
     return (
-        <div>
-            <div>
-                <h1 onClick={() => showHide(monster.index)}>
-                    {monster.name}
-                </h1>
-                <button onClick={() => removeMonster(monster.index)}>X</button>
-            </div>
+        <Card
+            title={monster.name}
+            extra={
+                <div>
+                    <button onClick={() => showHide(monster.index)} >O</button>
+                    <button onClick={() => removeMonster(monster.index)}>X</button>
+                </div>}
+            bodyStyle={{ padding: "0" }}
+        >
             {monster.show ? (
                 <>
                     <p>{`${monster.size} ${monster.type}, ${monster.alignment}`}</p>
@@ -154,7 +158,7 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
                     </div>
                 </>
             ) : null}
-        </div>
+        </Card>
     )
 }
 
