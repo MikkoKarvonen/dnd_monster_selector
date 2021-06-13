@@ -72,10 +72,11 @@ function App() {
 
   return (
     <Layout>
-      <Sider>
-        <Input value={filter} onChange={(e) => filterMonsters(e)} />
-
+      <Sider theme="light">
         <List
+          size="small"
+          header={<Input value={filter} onChange={(e) => filterMonsters(e)} />}
+          bordered
           dataSource={filteredMonsters}
           renderItem={(monster) => (
             <List.Item
