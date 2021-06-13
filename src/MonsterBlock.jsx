@@ -1,4 +1,5 @@
-import { Card } from 'antd';
+import { Card, Button, Space } from 'antd';
+import { CloseOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 
 function MonsterBlock({ monster, showHide, removeMonster }) {
     const speeds = Object.keys(monster.speed).map((key) => {
@@ -22,14 +23,16 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
         }
     })
 
+    const arrowIcon = monster.show ? <ArrowUpOutlined /> : <ArrowDownOutlined />
+
     return (
         <Card
             title={monster.name}
             extra={
-                <div>
-                    <button onClick={() => showHide(monster.index)} >O</button>
-                    <button onClick={() => removeMonster(monster.index)}>X</button>
-                </div>}
+                <Space>
+                    <Button type="primary" icon={arrowIcon} onClick={() => showHide(monster.index)} size={'large'} />
+                    <Button type="primary" icon={<CloseOutlined />} onClick={() => removeMonster(monster.index)} size={'large'} />
+                </Space>}
             bodyStyle={{ padding: "0" }}
         >
             {monster.show ? (
