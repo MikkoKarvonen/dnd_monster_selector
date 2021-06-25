@@ -1,4 +1,4 @@
-import { Card, Button, Space, Table, Typography } from 'antd';
+import { Card, Button, Space, Table, Typography, Tag } from 'antd';
 import { CloseOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 const { Column } = Table;
 const { Text } = Typography;
@@ -123,22 +123,42 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
                                 </Table>
                             </>
                         ) : null}
-                        <p>Damage vulnerabilities</p>
-                        {monster.damage_vulnerabilities && monster.damage_vulnerabilities.map(vulnerability => {
-                            return <p>{vulnerability}</p>
-                        })}
-                        <p>Damage resistances</p>
-                        {monster.damage_resistances && monster.damage_resistances.map(resistance => {
-                            return <p>{resistance}</p>
-                        })}
-                        <p>Damage immunities</p>
-                        {monster.damage_immunities && monster.damage_immunities.map(immunity => {
-                            return <p>{immunity}</p>
-                        })}
-                        <p>Condition immunities</p>
-                        {monster.condition_immunities && monster.condition_immunities.map(immunity => {
-                            return <p>{immunity.name}</p>
-                        })}
+                        {monster.damage_vulnerabilities.length ? (
+                            <>
+                                <Text type="success">Damage vulnerabilities</Text><br />
+                                {monster.damage_vulnerabilities.map(vulnerability => {
+                                    return <Tag>{vulnerability}</Tag>
+                                })}
+                                <br />
+                            </>
+                        ) : null}
+                        {monster.damage_resistances.length ? (
+                            <>
+                                <Text type="warning">Damage resistances</Text><br />
+                                {monster.damage_resistances.map(resistance => {
+                                    return <Tag>{resistance}</Tag>
+                                })}
+                                <br />
+                            </>
+                        ) : null}
+                        {monster.damage_immunities.length ? (
+                            <>
+                                <Text type="danger">Damage immunities</Text><br />
+                                {monster.damage_immunities.map(immunity => {
+                                    return <Tag>{immunity}</Tag>
+                                })}
+                                <br />
+                            </>
+                        ) : null}
+                        {monster.condition_immunities.length ? (
+                            <>
+                                <Text mark>Condition immunities</Text><br />
+                                {monster.condition_immunities.map(immunity => {
+                                    return <Tag>{immunity.name}</Tag>
+                                })}
+                                <br />
+                            </>
+                        ) : null}
                         {senses.length ? (
                             <div>
                                 <p>Senses</p>
