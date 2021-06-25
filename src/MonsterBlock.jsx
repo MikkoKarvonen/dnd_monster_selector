@@ -1,7 +1,7 @@
 import { Card, Button, Space, Table, Typography, Tag } from 'antd';
 import { CloseOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 const { Column } = Table;
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 
 function MonsterBlock({ monster, showHide, removeMonster }) {
@@ -160,28 +160,33 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
                             </>
                         ) : null}
                         {senses.length ? (
-                            <div>
-                                <p>Senses</p>
+                            <>
+                                <Text type="secondary">Senses</Text><br />
                                 {senses.map(sense => {
-                                    return (
-                                        <p>{sense} {monster.senses[sense]}</p>
-                                    )
+                                    return <Tag>{sense} {monster.senses[sense]}</Tag>
                                 })}
-                            </div>
+                                <br />
+                            </>
 
                         ) : null}
-                        <p>Languages {monster.languages}</p>
-                        <p>Challenge {monster.challenge_rating} ({monster.xp}xp)</p>
+                        <Text strong>Languages: </Text>
+                        <Text>{monster.languages}</Text><br />
+                        <Text strong>Challenge: </Text>
+                        <Text>{monster.challenge_rating} ({monster.xp}xp)</Text><br />
                     </div>
                     <div>
-                        {monster.special_abilities && monster.special_abilities.map(ability => {
-                            return (
-                                <div>
-                                    <h3>{ability.name}</h3>
-                                    <p>{ability.desc}</p>
-                                </div>
-                            )
-                        })}
+                        {monster.special_abilities ? (
+                            <>
+                                <Title level={2}>Special Abilities</Title>
+                                {monster.special_abilities.map(ability => {
+                                    return (
+                                        <div>
+                                            <h3>{ability.name}</h3>
+                                            <p>{ability.desc}</p>
+                                        </div>
+                                    )
+                                })}
+                            </>) : null}
                     </div>
                     <div>
                         <h2>Actions</h2>
