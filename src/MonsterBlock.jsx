@@ -1,6 +1,7 @@
-import { Card, Button, Space, Table } from 'antd';
+import { Card, Button, Space, Table, Typography } from 'antd';
 import { CloseOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 const { Column } = Table;
+const { Text } = Typography;
 
 
 function MonsterBlock({ monster, showHide, removeMonster }) {
@@ -50,6 +51,19 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
         }
     ]
 
+    const savingThrowsObj = {};
+    savingThrows.map(saving => {
+        savingThrowsObj[saving.name] = saving.value
+    })
+    const savingThrowsRender = [savingThrowsObj];
+
+    const skillsObj = {};
+    skills.map(skill => {
+        skillsObj[skill.name] = skill.value
+    })
+    const skillsRender = [skillsObj];
+
+
     return (
         <Card
             title={monster.name}
@@ -86,24 +100,28 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
                     </Table>
                     <div>
                         {savingThrows.length ? (
-                            <div>
-                                <p>Saving throws</p>
-                                {savingThrows.map(saving => {
-                                    return (
-                                        <p>{saving.name} {saving.value}</p>
-                                    )
-                                })}
-                            </div>
+                            <>
+                                <Text strong>Saving Throws</Text>
+                                <Table dataSource={savingThrowsRender} pagination={false}>
+                                    {savingThrows.map(saving => {
+                                        return (
+                                            <Column title={saving.name} dataIndex={saving.name} key={saving.name} />
+                                        )
+                                    })}
+                                </Table>
+                            </>
                         ) : null}
                         {skills.length ? (
-                            <div>
-                                <p>Skills</p>
-                                {skills.map(skill => {
-                                    return (
-                                        <p>{skill.name} {skill.value}</p>
-                                    )
-                                })}
-                            </div>
+                            <>
+                                <Text strong>Skills</Text>
+                                <Table dataSource={skillsRender} pagination={false}>
+                                    {skills.map(skill => {
+                                        return (
+                                            <Column title={skill.name} dataIndex={skill.name} key={skill.name} />
+                                        )
+                                    })}
+                                </Table>
+                            </>
                         ) : null}
                         <p>Damage vulnerabilities</p>
                         {monster.damage_vulnerabilities && monster.damage_vulnerabilities.map(vulnerability => {
