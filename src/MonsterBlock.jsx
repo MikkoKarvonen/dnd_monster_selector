@@ -1,5 +1,7 @@
-import { Card, Button, Space } from 'antd';
+import { Card, Button, Space, Table } from 'antd';
 import { CloseOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
+const { Column } = Table;
+
 
 function MonsterBlock({ monster, showHide, removeMonster }) {
     const speeds = Object.keys(monster.speed).map((key) => {
@@ -25,6 +27,29 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
 
     const arrowIcon = monster.show ? <ArrowUpOutlined /> : <ArrowDownOutlined />
 
+    const combatSpeeds = [];
+    speeds.map(speed => {
+        combatSpeeds.push(`${speed}: ${monster.speed[speed]}`)
+    })
+    const combatStats = [
+        {
+            ac: monster.armor_class,
+            hp: `${monster.hit_points} (${monster.hit_dice})`,
+            speeds: combatSpeeds
+        }
+    ]
+
+    const monsterStats = [
+        {
+            str: monster.strength,
+            dex: monster.dexterity,
+            con: monster.constitution,
+            int: monster.intelligence,
+            wis: monster.wisdom,
+            cha: monster.charisma,
+        }
+    ]
+
     return (
         <Card
             title={monster.name}
@@ -38,44 +63,27 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
             {monster.show ? (
                 <>
                     <p>{`${monster.size} ${monster.type}, ${monster.alignment}`}</p>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>AC</th>
-                                <th>HP</th>
-                                <th>Speed</th>
-                            </tr>
-                            <tr>
-                                <td>{monster.armor_class}</td>
-                                <td>{`${monster.hit_points} (${monster.hit_dice})`}</td>
-                                <td>
-                                    {speeds.map(speed => {
-                                        return <p key={`${monster.index}_${speed}`}>{speed}: {monster.speed[speed]}</p>
-                                    })}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>Str</th>
-                                <th>Dex</th>
-                                <th>Con</th>
-                                <th>Int</th>
-                                <th>Wis</th>
-                                <th>Cha</th>
-                            </tr>
-                            <tr>
-                                <td>{monster.strength}</td>
-                                <td>{monster.dexterity}</td>
-                                <td>{monster.constitution}</td>
-                                <td>{monster.intelligence}</td>
-                                <td>{monster.wisdom}</td>
-                                <td>{monster.charisma}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <Table dataSource={combatStats} pagination={false}>
+                        <Column title="AC" dataIndex="ac" key="ac" />
+                        <Column title="HP" dataIndex="hp" key="hp" />
+                        <Column title="Speeds" dataIndex="speeds" key="speeds" render={speeds => (
+                            <>
+                                {speeds.map(speed => (
+                                    <p>
+                                        {speed}
+                                    </p>
+                                ))}
+                            </>
+                        )} />
+                    </Table>
+                    <Table dataSource={monsterStats} pagination={false}>
+                        <Column title="STR" dataIndex="str" key="str" />
+                        <Column title="DEX" dataIndex="dex" key="dex" />
+                        <Column title="CON" dataIndex="con" key="con" />
+                        <Column title="INT" dataIndex="int" key="int" />
+                        <Column title="WIS" dataIndex="wis" key="wis" />
+                        <Column title="CHA" dataIndex="cha" key="cha" />
+                    </Table>
                     <div>
                         {savingThrows.length ? (
                             <div>
