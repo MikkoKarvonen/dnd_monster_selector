@@ -76,18 +76,18 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
         >
             {monster.show ? (
                 <>
-                    <p>{`${monster.size} ${monster.type}, ${monster.alignment}`}</p>
+                    <Text type="secondary">{`${monster.size} ${monster.type}, ${monster.alignment}`}</Text>
                     <Table dataSource={combatStats} pagination={false}>
                         <Column title="AC" dataIndex="ac" key="ac" />
                         <Column title="HP" dataIndex="hp" key="hp" />
                         <Column title="Speeds" dataIndex="speeds" key="speeds" render={speeds => (
-                            <>
+                            <Space direction="vertical">
                                 {speeds.map(speed => (
-                                    <p>
+                                    <Text>
                                         {speed}
-                                    </p>
+                                    </Text>
                                 ))}
-                            </>
+                            </Space>
                         )} />
                     </Table>
                     <Table dataSource={monsterStats} pagination={false}>
@@ -177,37 +177,38 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
                     <div>
                         {monster.special_abilities ? (
                             <>
-                                <Title level={2}>Special Abilities</Title>
+                                <Title level={1}>Special Abilities</Title>
                                 {monster.special_abilities.map(ability => {
                                     return (
-                                        <div>
-                                            <h3>{ability.name}</h3>
-                                            <p>{ability.desc}</p>
-                                        </div>
+                                        <>
+                                            <Title level={2}>{ability.name}</Title>
+                                            <Text>{ability.desc}</Text>
+                                        </>
                                     )
                                 })}
                             </>) : null}
                     </div>
                     <div>
-                        <h2>Actions</h2>
+                        <Title level={1}>Actions</Title>
                         {monster.actions.map(action => {
                             return (
-                                <div>
-                                    <h3>{action.name}</h3>
-                                    <p>{action.desc}</p>
-                                </div>
+                                <>
+                                    <Title level={2}>{action.name}</Title>
+                                    <Text>{action.desc}</Text>
+                                </>
                             )
                         })}
                         {monster.legendary_actions ? (
-                            <div>
-                                <h2>Legendary Actions</h2>
+                            <>
+                                <Title level={1}>Legendary Actions</Title>
                                 {monster.legendary_actions.map(action => {
-                                    return (<div>
-                                        <h3>{action.name}</h3>
-                                        <p>{action.desc}</p>
-                                    </div>)
+                                    return (
+                                        <>
+                                            <Title level={2}>{action.name}</Title>
+                                            <Text>{action.desc}</Text>
+                                        </>)
                                 })}
-                            </div>
+                            </>
                         ) : null}
                     </div>
                 </>
