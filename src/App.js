@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./index.css";
 import MonsterBlock from "./MonsterBlock";
-import { Layout, Input, List } from "antd";
+import { Layout, Input, List, Space } from "antd";
 import "antd/dist/antd.css";
 
 const { Sider, Content } = Layout;
@@ -89,16 +89,18 @@ function App() {
         />
       </Sider>
       <Content>
-        {selectedMonsters.map((monster) => {
-          return (
-            <MonsterBlock
-              key={monster.index}
-              monster={monster}
-              showHide={showHide}
-              removeMonster={removeMonster}
-            />
-          );
-        })}
+        <Space align="start" wrap>
+          {selectedMonsters.map((monster) => {
+            return (
+              <MonsterBlock
+                key={monster.index}
+                monster={monster}
+                showHide={showHide}
+                removeMonster={removeMonster}
+              />
+            );
+          })}
+        </Space>
       </Content>
     </Layout>
   );

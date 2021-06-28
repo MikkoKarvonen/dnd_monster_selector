@@ -62,6 +62,7 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
 
     return (
         <Card
+            style={{ width: 700 }}
             title={monster.name}
             extra={
                 <Space>
