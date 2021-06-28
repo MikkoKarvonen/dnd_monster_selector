@@ -1,44 +1,45 @@
-import { Card, Button, Space, Table, Typography, Tag } from 'antd';
-import { CloseOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
+import { Card, Button, Space, Table, Typography, Tag } from "antd";
+import {
+    CloseOutlined,
+    ArrowUpOutlined,
+    ArrowDownOutlined,
+} from "@ant-design/icons";
 const { Column } = Table;
 const { Text, Title } = Typography;
 
-
 function MonsterBlock({ monster, showHide, removeMonster }) {
     const speeds = Object.keys(monster.speed).map((key) => {
-        return key
+        return key;
     });
 
     const senses = Object.keys(monster.senses).map((key) => {
-        return key
+        return key;
     });
 
     const savingThrows = [];
     const skills = [];
-    monster.proficiencies.map(proficiency => {
-        const obj = { value: proficiency.value }
+    monster.proficiencies.forEach((proficiency) => {
+        const obj = { value: proficiency.value };
         if (proficiency.proficiency.index.includes("saving")) {
-            obj.name = proficiency.proficiency.name.replace("Saving Throw: ", "")
-            savingThrows.push(obj)
+            obj.name = proficiency.proficiency.name.replace("Saving Throw: ", "");
+            savingThrows.push(obj);
         } else if (proficiency.proficiency.index.includes("skill")) {
-            obj.name = proficiency.proficiency.name.replace("Skill: ", "")
-            skills.push(obj)
+            obj.name = proficiency.proficiency.name.replace("Skill: ", "");
+            skills.push(obj);
         }
-    })
+    });
 
-    const arrowIcon = monster.show ? <ArrowUpOutlined /> : <ArrowDownOutlined />
+    const arrowIcon = monster.show ? <ArrowUpOutlined /> : <ArrowDownOutlined />;
 
     const combatSpeeds = [];
-    speeds.map(speed => {
-        combatSpeeds.push(`${speed}: ${monster.speed[speed]}`)
-    })
+    speeds.map((speed) => combatSpeeds.push(`${speed}: ${monster.speed[speed]}`));
     const combatStats = [
         {
             ac: monster.armor_class,
             hp: `${monster.hit_points} (${monster.hit_dice})`,
-            speeds: combatSpeeds
-        }
-    ]
+            speeds: combatSpeeds,
+        },
+    ];
 
     const monsterStats = [
         {
@@ -48,30 +49,36 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
             int: monster.intelligence,
             wis: monster.wisdom,
             cha: monster.charisma,
-        }
-    ]
+        },
+    ];
 
     const savingThrowsObj = {};
-    savingThrows.map(saving => {
-        savingThrowsObj[saving.name] = saving.value
-    })
+    savingThrows.map((saving) => (savingThrowsObj[saving.name] = saving.value));
     const savingThrowsRender = [savingThrowsObj];
 
     const skillsObj = {};
-    skills.map(skill => {
-        skillsObj[skill.name] = skill.value
-    })
+    skills.map((skill) => (skillsObj[skill.name] = skill.value));
     const skillsRender = [skillsObj];
-
 
     return (
         <Card
             title={monster.name}
             extra={
                 <Space>
-                    <Button type="primary" icon={arrowIcon} onClick={() => showHide(monster.index)} size={'large'} />
-                    <Button type="primary" icon={<CloseOutlined />} onClick={() => removeMonster(monster.index)} size={'large'} />
-                </Space>}
+                    <Button
+                        type="primary"
+                        icon={arrowIcon}
+                        onClick={() => showHide(monster.index)}
+                        size={"large"}
+                    />
+                    <Button
+                        type="primary"
+                        icon={<CloseOutlined />}
+                        onClick={() => removeMonster(monster.index)}
+                        size={"large"}
+                    />
+                </Space>
+            }
             bodyStyle={{ padding: "0" }}
         >
             {monster.show ? (
@@ -80,15 +87,18 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
                     <Table dataSource={combatStats} pagination={false}>
                         <Column title="AC" dataIndex="ac" key="ac" />
                         <Column title="HP" dataIndex="hp" key="hp" />
-                        <Column title="Speeds" dataIndex="speeds" key="speeds" render={speeds => (
-                            <Space direction="vertical">
-                                {speeds.map(speed => (
-                                    <Text>
-                                        {speed}
-                                    </Text>
-                                ))}
-                            </Space>
-                        )} />
+                        <Column
+                            title="Speeds"
+                            dataIndex="speeds"
+                            key="speeds"
+                            render={(speeds) => (
+                                <Space direction="vertical">
+                                    {speeds.map((speed) => (
+                                        <Text>{speed}</Text>
+                                    ))}
+                                </Space>
+                            )}
+                        />
                     </Table>
                     <Table dataSource={monsterStats} pagination={false}>
                         <Column title="STR" dataIndex="str" key="str" />
@@ -103,10 +113,14 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
                             <>
                                 <Text strong>Saving Throws</Text>
                                 <Table dataSource={savingThrowsRender} pagination={false}>
-                                    {savingThrows.map(saving => {
+                                    {savingThrows.map((saving) => {
                                         return (
-                                            <Column title={saving.name} dataIndex={saving.name} key={saving.name} />
-                                        )
+                                            <Column
+                                                title={saving.name}
+                                                dataIndex={saving.name}
+                                                key={saving.name}
+                                            />
+                                        );
                                     })}
                                 </Table>
                             </>
@@ -115,98 +129,116 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
                             <>
                                 <Text strong>Skills</Text>
                                 <Table dataSource={skillsRender} pagination={false}>
-                                    {skills.map(skill => {
+                                    {skills.map((skill) => {
                                         return (
-                                            <Column title={skill.name} dataIndex={skill.name} key={skill.name} />
-                                        )
+                                            <Column
+                                                title={skill.name}
+                                                dataIndex={skill.name}
+                                                key={skill.name}
+                                            />
+                                        );
                                     })}
                                 </Table>
                             </>
                         ) : null}
                         {monster.damage_vulnerabilities.length ? (
                             <>
-                                <Text type="success">Damage vulnerabilities</Text><br />
-                                {monster.damage_vulnerabilities.map(vulnerability => {
-                                    return <Tag>{vulnerability}</Tag>
+                                <Text type="success">Damage vulnerabilities</Text>
+                                <br />
+                                {monster.damage_vulnerabilities.map((vulnerability) => {
+                                    return <Tag>{vulnerability}</Tag>;
                                 })}
                                 <br />
                             </>
                         ) : null}
                         {monster.damage_resistances.length ? (
                             <>
-                                <Text type="warning">Damage resistances</Text><br />
-                                {monster.damage_resistances.map(resistance => {
-                                    return <Tag>{resistance}</Tag>
+                                <Text type="warning">Damage resistances</Text>
+                                <br />
+                                {monster.damage_resistances.map((resistance) => {
+                                    return <Tag>{resistance}</Tag>;
                                 })}
                                 <br />
                             </>
                         ) : null}
                         {monster.damage_immunities.length ? (
                             <>
-                                <Text type="danger">Damage immunities</Text><br />
-                                {monster.damage_immunities.map(immunity => {
-                                    return <Tag>{immunity}</Tag>
+                                <Text type="danger">Damage immunities</Text>
+                                <br />
+                                {monster.damage_immunities.map((immunity) => {
+                                    return <Tag>{immunity}</Tag>;
                                 })}
                                 <br />
                             </>
                         ) : null}
                         {monster.condition_immunities.length ? (
                             <>
-                                <Text mark>Condition immunities</Text><br />
-                                {monster.condition_immunities.map(immunity => {
-                                    return <Tag>{immunity.name}</Tag>
+                                <Text mark>Condition immunities</Text>
+                                <br />
+                                {monster.condition_immunities.map((immunity) => {
+                                    return <Tag>{immunity.name}</Tag>;
                                 })}
                                 <br />
                             </>
                         ) : null}
                         {senses.length ? (
                             <>
-                                <Text type="secondary">Senses</Text><br />
-                                {senses.map(sense => {
-                                    return <Tag>{sense} {monster.senses[sense]}</Tag>
+                                <Text type="secondary">Senses</Text>
+                                <br />
+                                {senses.map((sense) => {
+                                    return (
+                                        <Tag>
+                                            {sense} {monster.senses[sense]}
+                                        </Tag>
+                                    );
                                 })}
                                 <br />
                             </>
-
                         ) : null}
                         <Text strong>Languages: </Text>
-                        <Text>{monster.languages}</Text><br />
+                        <Text>{monster.languages}</Text>
+                        <br />
                         <Text strong>Challenge: </Text>
-                        <Text>{monster.challenge_rating} ({monster.xp}xp)</Text><br />
+                        <Text>
+                            {monster.challenge_rating} ({monster.xp}xp)
+                        </Text>
+                        <br />
                     </div>
                     <div>
                         {monster.special_abilities ? (
                             <>
                                 <Title level={1}>Special Abilities</Title>
-                                {monster.special_abilities.map(ability => {
+                                {monster.special_abilities.map((ability) => {
                                     return (
                                         <>
                                             <Title level={2}>{ability.name}</Title>
                                             <Text>{ability.desc}</Text>
                                         </>
-                                    )
+                                    );
                                 })}
-                            </>) : null}
+                            </>
+                        ) : null}
                     </div>
                     <div>
                         <Title level={1}>Actions</Title>
-                        {monster.actions.map(action => {
+                        {monster.actions.map((action) => {
                             return (
                                 <>
                                     <Title level={2}>{action.name}</Title>
                                     <Text>{action.desc}</Text>
                                 </>
-                            )
+                            );
                         })}
                         {monster.legendary_actions ? (
                             <>
                                 <Title level={1}>Legendary Actions</Title>
-                                {monster.legendary_actions.map(action => {
+                                {monster.legendary_actions.map((action) => {
                                     return (
                                         <>
                                             <Title level={2}>{action.name}</Title>
                                             <Text>{action.desc}</Text>
-                                        </>)
+                                        </>
+                                    );
                                 })}
                             </>
                         ) : null}
@@ -214,8 +246,7 @@ function MonsterBlock({ monster, showHide, removeMonster }) {
                 </>
             ) : null}
         </Card>
-    )
+    );
 }
 
-
-export default MonsterBlock
+export default MonsterBlock;
